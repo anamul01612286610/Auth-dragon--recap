@@ -1,22 +1,3 @@
-// import {
-//   createBrowserRouter,
-//   RouterProvider,
-// } from "react-router-dom";
-
-// import router from './routes/Routes.jsx'
-// import { Root } from 'postcss'
-// import Home from './pages/Home/Home.jsx'
-// import Login from './pages/Login/Login.jsx'
-
-// const router = createBrowserRouter([
-  
-// ]);
-
-// ReactDOM.createRoot(document.getElementById('root')).render(
-//   <React.StrictMode>
-//       <RouterProvider router={router} />
-//   </React.StrictMode>,
-// )
 
 
 import * as React from "react";
@@ -29,6 +10,10 @@ import "./index.css";
 import Root from "./layouts/Root";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import AuthProvider from "./routes/Provider/AuthProvider";
+import News from "./pages/News/News";
+import PrivateRoute from "./routes/PrivateRoute";
 
 
 const router = createBrowserRouter([
@@ -38,11 +23,20 @@ const router = createBrowserRouter([
     children: [
       {
         path:"/",
-        element:<Home></Home>
+        element:<Home></Home>,
+        loader:()=>fetch('/news.json')
+      },
+      {
+        path:'/news/:id',
+        element:<PrivateRoute><News></News></PrivateRoute>
       },
       {
         path:"/login",
         element:<Login></Login>
+      },
+      {
+        path:"/register",
+        element:<Register></Register>
       }
 
     ]
@@ -50,6 +44,6 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+  <AuthProvider>  <RouterProvider router={router} /></AuthProvider>
   </React.StrictMode>
 );
